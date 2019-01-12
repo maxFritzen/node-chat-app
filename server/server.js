@@ -24,12 +24,13 @@ io.on('connection', (socket) => {
     'New user joined'
   ));
 
-  socket.on('createMessage', (msg) => {
-    console.log('createMessage: ', msg);
+  socket.on('createMessage', (message, callback) => {
+    console.log('createMessage: ', message);
     io.emit('newMessage', generateMessage(
       message.from,
       message.text
     ));
+    callback('This is from the server.');
   });
 
   socket.on('disconnect', () => {
