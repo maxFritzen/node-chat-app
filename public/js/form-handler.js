@@ -8,6 +8,6 @@ form.addEventListener("submit", function (e) {
     from: "User",
     text: input.value
   }, function () {
-
+    input.value = ''
   });
 });

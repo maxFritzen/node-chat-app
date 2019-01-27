@@ -2,21 +2,32 @@
 <html>
     <head>
         <meta charset="utf-8">
+        <link rel="stylesheet" href="css/styles.css">
     </head>
 
-    <body>
-        <p>This is the chat app</p>
+    <body class="chat">
+
+        <div class="chat__main">
+
+        </div>
 
         <ul id="messages"></ul>
 
         <form id="message-form">
-            <input name="message" type="text" placeholder="Message" />
+            <input 
+							name="message" 
+							type="text" 
+							placeholder="Message" 
+							autofocus
+							autocomplete="off"
+						/>
             <button>Send</button>
         </form>
 
         <button id="send-location">Send location</button>
 
         <script src="/socket.io/socket.io.js"></script>
+        <script src="/js/lib/moment.js"></script>
         <script src="/js/form-handler.js"></script>
         <script src="/js/index.js"></script>
     </body>
