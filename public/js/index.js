@@ -1,5 +1,23 @@
 var socket = io();
 
+function scrollToBottom () {
+  var messages = document.getElementById('messages');
+  var newMessage = messages.lastChild;
+  var messagesHeight = messages.clientHeight;
+  var scrollTop = messages.scrollTop;
+  var scrollHeight = messages.scrollHeight;
+  var newMessageHeight = newMessage.clientHeight;
+  var lastMessageHeight = 0;
+  if (messages.children.length > 1) {
+    lastMessageHeight = newMessage.previousSibling.clientHeight;
+  }
+  
+  if (messagesHeight + scrollTop + newMessageHeight + lastMessageHeight >= scrollHeight) {
+    console.log('should scroll');
+    messages.scrollTo(0, scrollHeight);
+  }
+}
+
 socket.on('connect', function () {
   console.log('Connected to server');
 });
@@ -22,19 +40,10 @@ socket.on('newMessage', function (msg) {
   var test = document.createElement('li');
   test.innerHTML = html;
   messages.appendChild(test);
-  // test.insertAdjacentText('beforeend', msg.text)
-  // messages.appendChild(test);
-  // var formattedTime = moment(msg.createdAt).format('h:mm');
-
-  // var messages = document.getElementById('messages');
-  // var li = document.createElement('li');
-  // var text = document.createTextNode(`${msg.from} ${formattedTime}: ${msg.text}`);
-  // li.appendChild(text);
-  // ul.appendChild(li);
+  scrollToBottom()
 });
 
 socket.on('newLocationMessage', function (msg) {
-  console.log(msg);
 
   var formattedTime = moment(msg.createdAt).format('h:mm');
   var template = document.getElementById('location-message-template').innerHTML;
@@ -48,18 +57,7 @@ socket.on('newLocationMessage', function (msg) {
   var test = document.createElement('li');
   test.innerHTML = html;
   messages.appendChild(test);
-  // var formattedTime = moment(msg.createdAt).format('h:mm');
-  // var ul = document.getElementById('messages');
-  // var li = document.createElement('li');
-  // var a = document.createElement('a');
-  // a.href = msg.url;
-  // a.target = '_blank';
-  // a.textContent = 'My current location';
-  // var text = document.createTextNode(`${msg.from} ${formattedTime}: `)
-  
-  // li.appendChild(text);
-  // li.appendChild(a);
-  // ul.appendChild(li);
+  scrollToBottom()
 });
 
 var locationButton = document.getElementById('send-location');
