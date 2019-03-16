@@ -10,8 +10,10 @@
     <body class="chat">
 
       <div class="chat__sidebar">
-        <h3>Peolpe</h3>
-        <div id="users"></div>
+        <h3>People</h3>
+        <div id="users">
+          <ol id='userList'></ol>
+        </div>
       </div>
 
       <div class="chat__main">
@@ -61,6 +63,7 @@
       <script src="/socket.io/socket.io.js"></script>
       <script src="/js/lib/moment.js"></script>
       <script src="/js/lib/mustache.js"></script>
+      <script src="/js/lib/deparam.js"></script>
       <script src="/js/form-handler.js"></script>
       <script src="/js/chat.js"></script>
     </body>

@@ -20,11 +20,57 @@ function scrollToBottom () {
 
 socket.on('connect', function () {
   console.log('Connected to server');
+  var params = deparam(window.location.search);
+  socket.emit('join', params, function (err) {
+    if (err) {
+      alert(err);
+      window.location.href = '/';
+    } else {
+      console.log('No error.');
+    }
+  })
 });
 
 socket.on('disconnect', function () {
-  console.log('Disconnected from server');
+  console.log('Disconnected from server')
 });
+
+socket.on('updateUserList', function (users) {
+  console.log('userslist: ', users);
+  var oldList = document.getElementById('userList');
+  var newList = document.createElement('ol');
+  
+  users.forEach((user) => {
+    var li = document.createElement('li');
+    li.textContent = user;
+    newList.appendChild(li);
+  });
+
+  var userList = document.getElementById('users');
+  userList.replaceChild(newList, oldList);
+  newList.id = 'userList';
+});
+
+function autoScroll () {
+  var messages = document.getElementById('messages');
+  var newMessage = messages.lastElementChild;
+
+
+  var newMessageStyles = getComputedStyle(newMessage);
+  var newMessageMargin = parseInt(newMessageStyles.marginBottom)
+  var newMessageHeight = newMessage.offsetHeight + newMessageMargin;
+
+  var visibleHeight = messages.offsetHeight;
+
+  var containerHeight = messages.scrollHeight;
+
+  var scrollOffset = messages.scrollTop + visibleHeight;
+
+  if (containerHeight - newMessageHeight <= scrollOffset) {
+    messages.scrollTop = messages.scrollHeight;
+  }
+
+}
 
 socket.on('newMessage', function (msg) {
   console.log('New msg', msg);
@@ -40,7 +86,7 @@ socket.on('newMessage', function (msg) {
   var test = document.createElement('li');
   test.innerHTML = html;
   messages.appendChild(test);
-  scrollToBottom()
+  autoScroll()
 });
 
 socket.on('newLocationMessage', function (msg) {
@@ -57,7 +103,7 @@ socket.on('newLocationMessage', function (msg) {
   var test = document.createElement('li');
   test.innerHTML = html;
   messages.appendChild(test);
-  scrollToBottom()
+  autoScroll()
 });
 
 var locationButton = document.getElementById('send-location');
